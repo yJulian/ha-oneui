@@ -9,7 +9,7 @@ One UI:
   paper-font-common-code_-_font-family: 'monospace'
   mdc-typography-font-family: 'var(--ha-font-family-body)'
 
-  # Soft surfaces and generous corners, without changing touch target sizes.
+  # Soft surfaces and generous corners.
   ha-card-border-radius: '28px'
   ha-card-border-width: '0px'
   ha-card-box-shadow: 'none'
@@ -21,6 +21,20 @@ One UI:
   mdc-shape-large: '28px'
   ha-view-sections-column-gap: '16px'
   ha-view-sections-row-gap: '16px'
+
+  # Native card-feature corners (buttons, selectors, switches and sliders).
+  ha-card-features-border-radius: '20px'
+
+  # Optional card-mod enhancement: HA hard-codes feature height at 42px.
+  # These hooks are ignored when card-mod is not installed.
+  one-ui-feature-height: '48px'
+  card-mod-theme: 'One UI'
+  card-mod-card-yaml: |
+    hui-card-features $: |
+      :host {
+        --feature-height: var(--one-ui-feature-height, 48px);
+        --feature-button-spacing: 10px;
+      }
 
   # Semantic aliases also cover older Material-based frontend components.
   accent-color: 'var(--primary-color)'

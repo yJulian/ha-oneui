@@ -33,7 +33,7 @@ The repository includes a root-level `hacs.json` that explicitly selects `themes
 
 After editing the theme, run `frontend.reload_themes` from **Developer tools → Actions**. Refresh the browser or reopen the Companion App if colors are cached.
 
-No custom cards, JavaScript, card-mod, external fonts or HACS are required. See Home Assistant's [theme installation and mode documentation](https://www.home-assistant.io/integrations/frontend/) for the supported configuration format.
+The base theme requires no custom cards, JavaScript, card-mod, external fonts or HACS. Optional larger card-feature controls use card-mod as described below. See Home Assistant's [theme installation and mode documentation](https://www.home-assistant.io/integrations/frontend/) for the supported configuration format.
 
 ## Galaxy setup
 
@@ -41,7 +41,19 @@ Use the Home Assistant Android Companion App or a modern browser. With the profi
 
 The font stack first tries `One UI Sans` and `SamsungOne`, then Roboto and the system sans-serif. Availability depends on the Android WebView/browser; installing the theme does not make Samsung's proprietary fonts available. No font files are bundled or fetched.
 
-Built-in cards retain their native touch targets and accessibility behavior. Sections dashboards work well on narrow phone displays and expand across larger tablet/foldable screens. Keep frequent controls near the top of each section and avoid dense entity lists.
+Built-in cards retain their native accessibility behavior. Sections dashboards work well on narrow phone displays and expand across larger tablet/foldable screens. Keep frequent controls near the top of each section and avoid dense entity lists.
+
+## Larger Tile controls
+
+Card-feature controls use a consistent `20px` corner radius in both modes, including the sub-buttons inside Tile cards. This applies without extra dependencies.
+
+For larger controls, install **card-mod** through HACS and follow its [installation instructions](https://github.com/thomasloven/lovelace-card-mod#installation). The theme includes an optional [card-mod theme hook](https://github.com/thomasloven/lovelace-card-mod/blob/master/README-themes.md) that increases feature height from `42px` to `48px` and uses `10px` spacing between grouped feature buttons. It affects built-in card features, including Tile sliders, switches and grouped buttons. It does not resize the main Tile entity icon or custom-card sub-buttons.
+
+Reload themes and refresh the frontend after installing card-mod. Without card-mod, the updated corners still apply and feature controls keep Home Assistant's default height. Home Assistant [sets feature height inside the component](https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/card-features/hui-card-features.ts), so a plain YAML theme cannot override it through inheritance.
+
+For Sections dashboards with features below the Tile content, allow enough vertical space: use **3 rows** in the card's Layout settings. The example dashboard already does this for its brightness controls. Check inline features and manually sized cards for clipping on narrow screens; move features below the content if needed.
+
+Change `one-ui-feature-height` to adjust the enhanced height, or `ha-card-features-border-radius` to adjust the corners. These hooks depend on frontend component structure and should be checked after frontend updates. The larger controls have not yet been visually verified in a running HA instance.
 
 ## Example dashboard
 

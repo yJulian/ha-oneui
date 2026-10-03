@@ -26,12 +26,18 @@ views:
             entity: light.living_room
             name: Living room
             icon: mdi:sofa-outline
+            grid_options:
+              columns: 6
+              rows: 3
             features:
               - type: light-brightness
           - type: tile
             entity: light.bedroom
             name: Bedroom
             icon: mdi:bed-outline
+            grid_options:
+              columns: 6
+              rows: 3
             features:
               - type: light-brightness
           - type: tile
