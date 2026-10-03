@@ -1,0 +1,78 @@
+# Paste into a new dashboard's raw configuration editor.
+# Replace every example entity ID with an entity from your installation.
+title: Home
+views:
+  - title: Home
+    path: home
+    icon: mdi:home-outline
+    type: sections
+    max_columns: 3
+    # Inherit the profile theme and its system-controlled light/dark mode.
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: My home
+            heading_style: title
+            icon: mdi:home-outline
+          - type: markdown
+            content: |
+              ## Welcome home
+              Your everyday controls, all in one place.
+          - type: heading
+            heading: Quick controls
+            heading_style: subtitle
+          - type: tile
+            entity: light.living_room
+            name: Living room
+            icon: mdi:sofa-outline
+            features:
+              - type: light-brightness
+          - type: tile
+            entity: light.bedroom
+            name: Bedroom
+            icon: mdi:bed-outline
+            features:
+              - type: light-brightness
+          - type: tile
+            entity: switch.desk
+            name: Desk
+            icon: mdi:desk
+          - type: tile
+            entity: fan.bedroom
+            name: Fan
+      - type: grid
+        cards:
+          - type: heading
+            heading: Comfort
+            heading_style: title
+            icon: mdi:thermometer
+          - type: thermostat
+            entity: climate.living_room
+            name: Living room
+          - type: tile
+            entity: sensor.living_room_temperature
+            name: Temperature
+          - type: tile
+            entity: sensor.living_room_humidity
+            name: Humidity
+      - type: grid
+        cards:
+          - type: heading
+            heading: Your day
+            heading_style: title
+            icon: mdi:white-balance-sunny
+          - type: weather-forecast
+            entity: weather.home
+            forecast_type: daily
+          - type: media-control
+            entity: media_player.living_room
+          - type: entities
+            title: At a glance
+            show_header_toggle: false
+            state_color: true
+            entities:
+              - entity: binary_sensor.front_door
+                name: Front door
+              - entity: sensor.phone_battery
+                name: Phone battery
