@@ -45,15 +45,17 @@ Built-in cards retain their native accessibility behavior. Sections dashboards w
 
 ## Larger Tile controls
 
-Card-feature controls use a consistent `20px` corner radius in both modes, including the sub-buttons inside Tile cards. This applies without extra dependencies.
+Card-feature controls use a consistent `20px` corner radius in both modes, including the sub-buttons inside Tile cards. Feature rows and columns use `8px` gaps to leave more space for the controls. These settings apply without extra dependencies.
 
-For larger controls, install **card-mod** through HACS and follow its [installation instructions](https://github.com/thomasloven/lovelace-card-mod#installation). The theme includes an optional [card-mod theme hook](https://github.com/thomasloven/lovelace-card-mod/blob/master/README-themes.md) that increases feature height from `42px` to `48px` and uses `10px` spacing between grouped feature buttons. It affects built-in card features, including Tile sliders, switches and grouped buttons. It does not resize the main Tile entity icon or custom-card sub-buttons.
+For larger controls, install **card-mod 4** through HACS and follow its [installation instructions](https://github.com/thomasloven/lovelace-card-mod#installation). The theme includes an optional [card-mod theme hook](https://github.com/thomasloven/lovelace-card-mod/blob/master/README-themes.md) that increases feature height from `42px` to `56px` and uses `6px` spacing between grouped feature buttons. It affects built-in card features, including Tile sliders, switches and grouped buttons. It does not resize the main Tile entity icon or custom-card sub-buttons.
+
+The enhancement uses a plain `card-mod-card` CSS rule targeting the feature host in the card's shadow root. It does not traverse into the feature shadow root or attach child card-mod elements. This follows [card-mod 4's application model](https://github.com/thomasloven/lovelace-card-mod/blob/master/README-application.md); custom wrappers and older card-mod versions may not apply the larger controls.
 
 Reload themes and refresh the frontend after installing card-mod. Without card-mod, the updated corners still apply and feature controls keep Home Assistant's default height. Home Assistant [sets feature height inside the component](https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/card-features/hui-card-features.ts), so a plain YAML theme cannot override it through inheritance.
 
 For Sections dashboards with features below the Tile content, allow enough vertical space: use **3 rows** in the card's Layout settings. The example dashboard already does this for its brightness controls. Check inline features and manually sized cards for clipping on narrow screens; move features below the content if needed.
 
-Change `one-ui-feature-height` to adjust the enhanced height, or `ha-card-features-border-radius` to adjust the corners. These hooks depend on frontend component structure and should be checked after frontend updates. The larger controls have not yet been visually verified in a running HA instance.
+Change `one-ui-feature-height` to adjust the enhanced height, `one-ui-feature-button-spacing` to adjust grouped button spacing, or `ha-card-features-border-radius` to adjust the corners. `ha-card-feature-gap` and `ha-card-feature-column-gap` control gaps between feature rows and columns. These hooks depend on frontend component structure and should be checked after frontend updates. The larger controls have not yet been visually verified in a running HA instance.
 
 ## Example dashboard
 
@@ -86,6 +88,16 @@ Primary/accent colors, entity state colors and light/dark theme modes use docume
 The YAML and palette contrast have been checked locally. Rendering has not yet been verified against a running Home Assistant instance or physical Galaxy device. Before relying on the theme, check your dashboard, sidebar, settings, more-info dialogs, inputs, toggles and sliders in both modes on your device. Check unavailable entities and alarm/lock states as well.
 
 ## Troubleshooting
+
+### Slow dashboard switching
+
+Earlier revisions used `card-mod-card-yaml` with a `hui-card-features $` selector on every card, including cards without features. That adds child-selection and mutation-observer work through card-mod. The current revision replaces it with plain CSS. This is a mitigation for a plausible source of navigation overhead, not a confirmed fix for every dashboard freeze.
+
+After updating, run `frontend.reload_themes` and fully reload the page or restart the Companion App to remove old hooks. Repeat the same dashboard switches on the same device. A high Interaction to Next Paint (INP) processing duration with low input/presentation delay points to work in the event-processing phase; INP alone does not identify the responsible script.
+
+If switching is still slow, temporarily remove `card-mod-theme` and `card-mod-card` from a local copy of the theme, reload themes and fully reload the client, then compare again. Corners and colors remain available, while controls return to the default height. Also compare against Home Assistant's default theme. For diagnosis, record a browser Performance trace covering the switch, and inspect the long main-thread task and its call stack. Include Home Assistant/card-mod versions, browser or Companion App, and whether it also occurs without the enhancement.
+
+For supported non-CAST clients, card-mod's upstream documentation recommends loading it as a frontend module for better theme performance; follow its version-specific instructions and avoid conflicting resource URLs. No frontend module configuration is installed by this repository.
 
 | Symptom | What to check |
 | --- | --- |

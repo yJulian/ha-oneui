@@ -24,17 +24,20 @@ One UI:
 
   # Native card-feature corners (buttons, selectors, switches and sliders).
   ha-card-features-border-radius: '20px'
+  ha-card-feature-gap: '8px'
+  ha-card-feature-column-gap: '8px'
 
   # Optional card-mod enhancement: HA hard-codes feature height at 42px.
+  # Requires card-mod 4; plain CSS avoids per-card shadow-DOM traversal.
   # These hooks are ignored when card-mod is not installed.
-  one-ui-feature-height: '48px'
+  one-ui-feature-height: '56px'
+  one-ui-feature-button-spacing: '6px'
   card-mod-theme: 'One UI'
-  card-mod-card-yaml: |
-    hui-card-features $: |
-      :host {
-        --feature-height: var(--one-ui-feature-height, 48px);
-        --feature-button-spacing: 10px;
-      }
+  card-mod-card: |
+    hui-card-features {
+      --feature-height: var(--one-ui-feature-height, 56px);
+      --feature-button-spacing: var(--one-ui-feature-button-spacing, 6px);
+    }
 
   # Semantic aliases also cover older Material-based frontend components.
   accent-color: 'var(--primary-color)'
