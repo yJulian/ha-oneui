@@ -6,6 +6,20 @@ The design reference is Samsung's [current One UI page](https://www.samsung.com/
 
 ## Install
 
+### HACS
+
+1. In HACS, open **Custom repositories** from the menu.
+2. Add `https://github.com/yJulian/ha-oneui` with the type **Theme**.
+3. Open **One UI for Home Assistant** and download it.
+4. Enable the theme directory with the `frontend:` configuration shown below, then check the configuration and restart Home Assistant if this is your first theme installation.
+5. Select **One UI** in your user profile, and choose **Auto**, **Light** or **Dark** as the color mode.
+
+HACS manages the theme under `/config/themes/one_ui/`. Avoid installing a second copy manually, since both copies define the same theme name. Local edits to the HACS-managed file may be replaced by updates.
+
+The repository includes a root-level `hacs.json` that explicitly selects `themes/one_ui.yaml` and displays this README in HACS. See the [HACS theme requirements](https://www.hacs.dev/docs/publish/theme/) and [manifest documentation](https://www.hacs.dev/docs/publish/start/).
+
+### Manual installation
+
 1. Copy [themes/one_ui.yaml](themes/one_ui.yaml) to `/config/themes/one_ui.yaml` on your Home Assistant instance. Create the `themes` directory if needed.
 2. Merge the following into `/config/configuration.yaml`. If you already have a `frontend:` section, add the `themes:` entry there rather than creating a second section. Keep your existing theme include if it already loads this directory.
 
@@ -64,6 +78,7 @@ The YAML and palette contrast have been checked locally. Rendering has not yet b
 | Symptom | What to check |
 | --- | --- |
 | Theme is missing | File location, theme include, configuration validation and initial restart |
+| HACS says a version cannot be used | Refresh repository information and select the updated default branch or a release containing `hacs.json` and `themes/one_ui.yaml`; confirm the repository type is Theme |
 | Theme stays light or dark | Profile color mode, device settings and dashboard theme overrides |
 | Some cards look different | Card-specific styles and frontend variable changes |
 | Samsung font is missing | WebView font availability; Roboto/system fallback is expected |
